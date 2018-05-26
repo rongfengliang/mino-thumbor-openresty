@@ -1,0 +1,22 @@
+version: '3'
+services:
+  nginx:
+    image: mynginx-minio
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
+    ports:
+      - 8087:80
+    depends_on:
+      - thumbor
+      - minio
+  thumbor:
+    image: apsl/thumbor
+  minio:
+    image: minio/minio
+    volumes:
+      - ./data:/data
+      - ./config:/root/.minio
+    ports:
+      - 9091:9000
+    command: server /data
